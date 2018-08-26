@@ -136,7 +136,6 @@ function count() {
 function play() {
   cards.forEach(function (card) {
     card.addEventListener('click', function() {
-      console.log(matchedCards);
       if (openCards.length < 2) {
         show(card);
         if (openCards.length == 2) {
