@@ -49,7 +49,7 @@ function shuffleCards() {
   }
 };
 
-function runTime() {
+function runTimer() {
   timer = setInterval(function() {
     time ++;
     timerCount.textContent = time;
@@ -57,14 +57,14 @@ function runTime() {
 }
 
 function clearTimer() {
-  deck.removeEventListener('click', runTime);
+  deck.removeEventListener('click', runTimer);
   clearInterval(timer);
   timerCount.textContent = time;
 };
 
 function startTimer() {
   clearTimer();
-  deck.addEventListener('click', runTime, { once: true });
+  deck.addEventListener('click', runTimer, { once: true });
 };
 
 // start fuction to initialize the game
