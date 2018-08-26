@@ -49,23 +49,22 @@ function shuffleCards() {
   }
 };
 
-function runTimer() {
-  deck.addEventListener('click', function() {
-    timer = setInterval(function() {
-      time ++;
-      timerCount.textContent = time;
-    }, 1000);
-  }, { once: true });
+function runTime() {
+  timer = setInterval(function() {
+    time ++;
+    timerCount.textContent = time;
+  }, 1000);
 }
 
 function clearTimer() {
+  deck.removeEventListener('click', runTime);
   clearInterval(timer);
   timerCount.textContent = time;
 };
 
 function startTimer() {
   clearTimer();
-  runTimer();
+  deck.addEventListener('click', runTime, { once: true });
 };
 
 // start fuction to initialize the game
@@ -73,6 +72,7 @@ function start() {
   matchedCards = 0;
   moves = 0;
   time = 0;
+  openCards = [];
   stars[0].style.color = 'gold';
   stars[1].style.color = 'gold';
   stars[2].style.color = 'gold';
@@ -159,9 +159,8 @@ function win() {
 
 function refresh() {
   restart.addEventListener('click', function() {
-    hide();
     cardIcons.forEach(function (icon) {
-      icon.parentElement.classList.remove('open', 'show', 'match');
+      icon.parentElement.classList.remove('open', 'show', 'match', 'wrong');
       icon.className = 'fa';
     });
     start();
