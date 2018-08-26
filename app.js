@@ -100,7 +100,7 @@ function show(card) {
   }
 };
 
-function match() {
+function match(card) {
   if (openCards[1].innerHTML == openCards[0].innerHTML) {
     openCards[0].classList.add('match');
     openCards[1].classList.add('match');
@@ -117,7 +117,7 @@ function hide() {
       openCard.classList.remove('open', 'show', 'wrong');
     });
     openCards = [];
-  }, 500)
+  }, 1000)
 };
 
 function count() {
@@ -136,13 +136,13 @@ function count() {
 function play() {
   cards.forEach(function (card) {
     card.addEventListener('click', function() {
-      console.log(openCards.length);
+      console.log(matchedCards);
       if (openCards.length < 2) {
         show(card);
-      }
-      if (openCards.length == 2) {
-        match();
-        hide();
+        if (openCards.length == 2) {
+          match(card);
+          hide();
+        }
       }
       win();
     })
