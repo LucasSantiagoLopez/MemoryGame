@@ -250,3 +250,78 @@ h1 {
     text-align: center;
     margin-left: 25px;
 }
+
+/*
+* Styles for contratulations modal
+*/
+
+@-webkit-keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.5);
+            transform: scale(0.5);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+.modal {
+  z-index: 1;
+  position: absolute;
+  background-image: linear-gradient(to top, #3f51b1 0%, #5a55ae 13%, #7b5fac 25%, #8f6aae 38%, #a86aa4 50%, #cc6b8e 62%, #f18271 75%, #f3a469 87%, #f7c978 100%);
+  width: 800px;
+  height: 300px;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+  align-items: center;
+  -webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal .again {
+  border-radius: 5px;
+  float: right;
+  cursor: pointer;
+  display: inline-block;
+  width: 80px;
+  height: 45px;
+  text-align: center;
+  line-height: 18px;
+  background: #b490ca;
+  border-color: #5ee7df;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  box-shadow: 4px 4px 4px rgba(46, 61, 73, 0.5);
+  font-family: 'Coda';
+  font-size: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.final-time {
+  margin: 0 4px 0 0px;
+}
+
+.final-stars p {
+  display: inline-block;
+  margin: 0 17px 0 5px;
+  color: gold;
+}

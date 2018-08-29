@@ -17,13 +17,20 @@ const movesCount = document.querySelector('.moves');
 const timerCount = document.querySelector('.timer');
 const restart = document.querySelector('.restart');
 const deck = document.querySelector('.deck');
-const stars = document.querySelectorAll('.fa-star');
+const title = document.querySelector('.modal h1');
+const star = document.querySelectorAll('.fa-star');
+const modal = document.querySelector('.modal');
+const finalMoves = document.querySelector('.final-moves');
+const finalTime = document.querySelector('.final-time');
+const finalStars = document.querySelector('.final-stars');
+const againButton = document.querySelector('.again');
 let openCards = [];
 let firstOpenCard;
 let secondOpenCard;
 let matchedCards;
 let moves;
 let time;
+let stars;
 let timer;
 
 // Shuffle function for the cards
@@ -49,6 +56,7 @@ function shuffleCards() {
   }
 };
 
+// Star timer and assign value to HTML element every second
 function runTimer() {
   timer = setInterval(function() {
     time ++;
@@ -56,26 +64,30 @@ function runTimer() {
   }, 1000);
 }
 
+// Clear the timer setting the initial value to 0
 function clearTimer() {
   deck.removeEventListener('click', runTimer);
   clearInterval(timer);
   timerCount.textContent = time;
 };
 
+// Clear and Start the timer for only first click
 function startTimer() {
   clearTimer();
   deck.addEventListener('click', runTimer, { once: true });
 };
 
-// start fuction to initialize the game
+// Start fuction to initialize the game
 function start() {
   matchedCards = 0;
   moves = 0;
   time = 0;
   openCards = [];
-  stars[0].style.color = 'gold';
-  stars[1].style.color = 'gold';
-  stars[2].style.color = 'gold';
+  stars = '<p>&#9733; &#9733; &#9733;</p>';
+  modal.style.display = 'none';
+  star[0].style.color = 'gold';
+  star[1].style.color = 'gold';
+  star[2].style.color = 'gold';
   movesCount.textContent = moves;
   shuffleCards();
   startTimer();
@@ -92,6 +104,7 @@ function start() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+// Shows the card symbol and adds it to openCards list
 function show(card) {
   if (card.className !== 'card open show' && card.className !== 'card match') {
     card.classList.add('open', 'show');
@@ -100,6 +113,7 @@ function show(card) {
   }
 };
 
+// Logic to match 2 cards in openCards list
 function match(card) {
   if (openCards[1].innerHTML == openCards[0].innerHTML) {
     openCards[0].classList.add('match');
@@ -111,6 +125,7 @@ function match(card) {
   }
 };
 
+// Hide cards
 function hide() {
   setTimeout(function() {
     openCards.forEach(function (openCard) {
@@ -120,19 +135,27 @@ function hide() {
   }, 1000)
 };
 
+// Count amount of movements and finish game if count is greater than 99
 function count() {
   moves++;
   movesCount.textContent = moves;
   if (moves >= 100) {
-    alert('SORRY YOU LOST!! nobody never had ' + moves + ' moves to solve it so, START OVER!!. Your time was ' + time + ' seconds FYI...');
+    star[2].style.color = 'black';
+    star[1].style.color = 'black';
+    star[0].style.color = 'black';
+    stars = '<p>&#9734; &#9734; &#9734;</p>';
+    lose();
   } else if (moves > 70) {
-    stars[2].style.color = 'black';
-    stars[1].style.color = 'black';
+    star[2].style.color = 'black';
+    star[1].style.color = 'black';
+    stars = '<p>&#9733; &#9734; &#9734;</p>';
   } else if (moves > 40) {
-    stars[2].style.color = 'black';
+    star[2].style.color = 'black';
+    stars = '<p>&#9733; &#9733; &#9734;</p>';
   }
 };
 
+// Initial event listener for every card to start playing
 function play() {
   cards.forEach(function (card) {
     card.addEventListener('click', function() {
@@ -148,26 +171,54 @@ function play() {
   })
 };
 
+// reestar the game
+function refresh() {
+  cardIcons.forEach(function (icon) {
+    icon.parentElement.classList.remove('open', 'show', 'match', 'wrong');
+    icon.className = 'fa';
+  });
+  start();
+}
+
+// Show win banner
 function win() {
   if (matchedCards == 8) {
     setTimeout(function() {
-      alert('YOU WON!! in exactly ' + moves + ' moves. Your time was ' + time + ' seconds.');
+      title.textContent = 'You Won!';
+      finalMoves.textContent = 'Your moves: ' + moves + ' moves';
+      finalTime.textContent = 'Your time: ' + time + ' seconds';
+      finalStars.textContent = 'Your stars: ';
+      finalStars.innerHTML += stars;
+      modal.style.display = 'flex';
+      playAgain();
     }, 500)
     clearTimer();
   }
 };
 
-function refresh() {
-  restart.addEventListener('click', function() {
-    cardIcons.forEach(function (icon) {
-      icon.parentElement.classList.remove('open', 'show', 'match', 'wrong');
-      icon.className = 'fa';
-    });
-    start();
-  })
+// Show lose banner
+function lose() {
+  title.textContent = 'You Lost!';
+  finalMoves.textContent = 'Your moves: ' + moves + ' moves';
+  finalTime.textContent = 'Your time: ' + time + ' seconds';
+  finalStars.textContent = 'Your stars: ';
+  finalStars.innerHTML += stars;
+  modal.style.display = 'flex';
+  clearTimer();
+  playAgain();
+}
+
+// Play again from the banner
+function playAgain() {
+  againButton.addEventListener('click', refresh);
+}
+
+// Reestart the game before loosing or winning
+function restartGame() {
+  restart.addEventListener('click', refresh);
 }
 
 // start of the GAME!!!
 start();
 play();
-refresh();
+restartGame();
